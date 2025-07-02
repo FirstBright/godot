@@ -1,0 +1,34 @@
+[gd_scene load_steps=6 format=3 uid="uid://dlnyofiqxuk7o"]
+
+[ext_resource type="Script" uid="uid://d0nnx0lnm2m1u" path="res://scripts/arrow.gd" id="1_23jat"]
+[ext_resource type="Texture2D" uid="uid://l4mmcwu26646" path="res://assets/Arrow01(32x32).png" id="1_umosx"]
+[ext_resource type="AudioStream" uid="uid://bnhku3283hxwp" path="res://assets/parringsound_join.wav" id="3_7ckq1"]
+[ext_resource type="AudioStream" uid="uid://bkpsk2em1022c" path="res://assets/hurt.wav" id="4_hmv1p"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_23jat"]
+size = Vector2(18.1429, 2.71429)
+
+[node name="Arrow" type="Area2D"]
+z_index = 1
+scale = Vector2(7, 7)
+script = ExtResource("1_23jat")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 1
+z_as_relative = false
+texture = ExtResource("1_umosx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.0714289, 0.5)
+shape = SubResource("RectangleShape2D_23jat")
+
+[node name="parry" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_7ckq1")
+volume_db = 10.93
+pitch_scale = 3.05
+max_distance = 1480.0
+
+[node name="hurt" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_hmv1p")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

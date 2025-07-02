@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://cd47qptwx32rb"]
+
+[ext_resource type="Script" uid="uid://d26m72yaohw67" path="res://scripts/battle.gd" id="1_a12nh"]
+[ext_resource type="Texture2D" uid="uid://cwxpx08wedaj1" path="res://assets/Dungeon background cartoon 2d 1.jpg" id="1_dn72j"]
+[ext_resource type="PackedScene" uid="uid://b73qpgjhvyjyv" path="res://scenes/battle_enemy.tscn" id="2_p1qf1"]
+[ext_resource type="PackedScene" uid="uid://ba7qcttcf7t00" path="res://scenes/battle_player.tscn" id="3_a12nh"]
+
+[node name="Battle" type="CanvasLayer"]
+script = ExtResource("1_a12nh")
+
+[node name="DungeonBackgroundCartoon2d1" type="Sprite2D" parent="."]
+position = Vector2(639, 384)
+scale = Vector2(1, 0.977214)
+texture = ExtResource("1_dn72j")
+
+[node name="Enemy2" parent="." instance=ExtResource("2_p1qf1")]
+position = Vector2(1039, 145)
+scale = Vector2(3, 3)
+
+[node name="Player2" parent="." instance=ExtResource("3_a12nh")]
+position = Vector2(163, 646)
+scale = Vector2(5, 5)
+
+[connection signal="ready" from="." to="." method="_on_ready"]
