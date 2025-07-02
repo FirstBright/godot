@@ -7,6 +7,13 @@ var is_waiting_hit = false
 @onready var sprite = $Sprite2D
 signal parried
 
+func setup(start_position, target_direction):
+	position = start_position
+	direction = target_direction
+	visible = true
+	set_physics_process(true)
+	is_waiting_hit = false
+
 func _physics_process(delta):
 	if not is_waiting_hit:
 		position += direction * speed * delta

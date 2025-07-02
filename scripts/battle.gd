@@ -8,6 +8,12 @@ func _ready() -> void:
 		enemy2.connect("battle_ended", _on_battle_ended)
 	else:
 		push_error("Enemy2 node not found in Battle scene!")
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("kill"):
+		if enemy2 and enemy2.is_in_vulnerable_state():
+			enemy2.kill_enemy()
+
 func _on_battle_ended():
 	visible = false
 	set_process(false)

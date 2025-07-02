@@ -58,9 +58,7 @@ func start_battle():
 		battle_instance.set_physics_process(true)
 		var enemy2 = battle_instance.get_node("Enemy2")
 		if enemy2:
-			enemy2.parry_count = 0
-			enemy2.battle_end = false
-			enemy2.shoot_timer.start()
+			enemy2.start_battle()
 		print("Battle instance reused")
 	current_state = GameState.BATTLE
 	if ui_animation_player:
