@@ -64,7 +64,7 @@ scale = Vector2(5, 5)
 sprite_frames = SubResource("SpriteFrames_rmi40")
 animation = &"idle"
 autoplay = "idle"
-frame_progress = 0.0792767
+frame_progress = 0.371361
 flip_h = true
 
 [node name="ShootTimer" type="Timer" parent="."]

@@ -8,3 +8,6 @@ script = ExtResource("1_ks1gq")
 enemy_scene = ExtResource("2_devoi")
 
 [node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 5.0
+
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]

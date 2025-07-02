@@ -1,5 +1,6 @@
-[gd_scene load_steps=9 format=4 uid="uid://6uiit7wud5an"]
+[gd_scene load_steps=10 format=4 uid="uid://6uiit7wud5an"]
 
+[ext_resource type="Script" uid="uid://b8h65s4pc2iy" path="res://scripts/game.gd" id="1_iywne"]
 [ext_resource type="PackedScene" uid="uid://br0s5e6fv4ai6" path="res://scenes/main_player.tscn" id="1_uwrxv"]
 [ext_resource type="Texture2D" uid="uid://b2eexdbq54ic3" path="res://assets/world_tileset.png" id="1_yqjtg"]
 [ext_resource type="PackedScene" uid="uid://dsukow5ca8n4d" path="res://scenes/ui.tscn" id="4_lbhrr"]
@@ -143,6 +144,7 @@ sources/0 = SubResource("TileSetAtlasSource_lnu2h")
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_lnu2h"]
 
 [node name="Game" type="Node2D"]
+script = ExtResource("1_iywne")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 position = Vector2(2, 0)
