@@ -76,7 +76,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"default",
-"speed": 7.0
+"speed": 10.0
 }]
 
 [node name="Player2" type="CharacterBody2D"]
@@ -104,7 +104,7 @@ wait_time = 0.1
 [node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="."]
 z_index = 2
 z_as_relative = false
-position = Vector2(5, -22)
+position = Vector2(8, -22)
 scale = Vector2(0.738281, 0.626953)
 sprite_frames = SubResource("SpriteFrames_dauvq")
 frame = 3
