@@ -7,6 +7,7 @@ var player_start_pos: Vector2
 var game_scene = null
 var player = null
 var ui_animation_player = null
+var ui_instance = null # Add a reference to the UI instance
 var collided_enemy = null
 var enemy_spawner = null
 
@@ -14,19 +15,36 @@ func _ready():
 	PlayerStats.no_health.connect(_on_player_no_health)
 
 func _on_player_no_health():
-	print("Player has died. Restarting stage.")
-	restart_stage()
+	print("Player has died. Showing game over screen.")
+	if ui_instance:
+		ui_instance.show_game_over_screen()
 
 func restart_stage():
 	PlayerStats.reset()
 	current_state = GameState.MAIN_GAME
+	if ui_instance:
+		ui_instance.hide_game_over_screen() # Hide game over screen on restart
 	get_tree().reload_current_scene()
+
+func _on_regame_requested():
+	print("Regame requested.")
+	restart_stage()
+
+func _on_exit_requested():
+	print("Exit requested. Quitting game.")
+	get_tree().quit()
 
 func set_game_scene_references(scene: Node):
 	game_scene = scene
 	player = game_scene.get_node("Player")
 	ui_animation_player = game_scene.get_node("UI/AnimationPlayer")
 	enemy_spawner = game_scene.get_node("EnemySpawner")
+	ui_instance = game_scene.get_node("UI") # Get reference to the UI instance
+	if ui_instance:
+		ui_instance.regame_requested.connect(_on_regame_requested)
+		ui_instance.exit_requested.connect(_on_exit_requested)
+	else:
+		push_error("UI node not found in Game scene")
 	if not player:
 		push_error("Player node not found in Game scene")
 	if not ui_animation_player:

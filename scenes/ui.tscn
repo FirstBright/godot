@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dsukow5ca8n4d"]
+[gd_scene load_steps=10 format=3 uid="uid://dsukow5ca8n4d"]
 
 [ext_resource type="Script" uid="uid://cdxd51o3krydl" path="res://scripts/ui.gd" id="1_abcde"]
 [ext_resource type="Texture2D" uid="uid://ub1hen6sgag5" path="res://assets/underProgress.png" id="2_yev5y"]
@@ -137,6 +137,13 @@ corner_radius_top_right = 1024
 corner_radius_bottom_right = 1024
 corner_radius_bottom_left = 1024
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_12345"]
+bg_color = Color(0.1, 0.1, 0.1, 0.8)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
 [node name="UI" type="CanvasLayer"]
 process_mode = 3
 script = ExtResource("1_abcde")
@@ -165,3 +172,35 @@ offset_top = 320.0
 offset_right = 544.0
 offset_bottom = 352.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_gdt2y")
+
+[node name="GameOverScreen" type="PanelContainer" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -100.0
+offset_right = 150.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_12345")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameOverScreen"]
+layout_mode = 2
+
+[node name="GameOverLabel" type="Label" parent="GameOverScreen/VBoxContainer"]
+layout_mode = 2
+text = "GAME OVER!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RegameButton" type="Button" parent="GameOverScreen/VBoxContainer"]
+layout_mode = 2
+text = "Regame"
+
+[node name="ExitButton" type="Button" parent="GameOverScreen/VBoxContainer"]
+layout_mode = 2
+text = "Exit"
