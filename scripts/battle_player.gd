@@ -24,6 +24,11 @@ func take_damage():
 		current_state = State.HURT
 		PlayerStats.take_damage()
 		# Add hurt animation or sound here
+		
+		# Check if the node is still in the tree before awaiting a timer
+		if not is_inside_tree():
+			return
+		
 		await get_tree().create_timer(0.5).timeout # Hurt state duration
 		current_state = State.IDLE
 

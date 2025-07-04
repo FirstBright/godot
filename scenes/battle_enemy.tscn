@@ -1,8 +1,25 @@
-[gd_scene load_steps=11 format=3 uid="uid://b73qpgjhvyjyv"]
+[gd_scene load_steps=20 format=3 uid="uid://b73qpgjhvyjyv"]
 
 [ext_resource type="Script" uid="uid://bjm57rdtfr70g" path="res://scripts/battle_enemy.gd" id="1_3neu4"]
 [ext_resource type="Texture2D" uid="uid://binjk3l7jqmn5" path="res://assets/Orc-Idle.png" id="1_wc7mj"]
 [ext_resource type="PackedScene" uid="uid://dlnyofiqxuk7o" path="res://scenes/arrow.tscn" id="2_mhmjl"]
+[ext_resource type="Texture2D" uid="uid://bvc1btbkc8gah" path="res://assets/Orc-Death.png" id="4_bkhal"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ikk2q"]
+atlas = ExtResource("4_bkhal")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nid5t"]
+atlas = ExtResource("4_bkhal")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b4nfm"]
+atlas = ExtResource("4_bkhal")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fn8i3"]
+atlas = ExtResource("4_bkhal")
+region = Rect2(300, 0, 100, 100)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xrdxo"]
 atlas = ExtResource("1_wc7mj")
@@ -28,8 +45,41 @@ region = Rect2(400, 0, 100, 100)
 atlas = ExtResource("1_wc7mj")
 region = Rect2(500, 0, 100, 100)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_ki2bx"]
+atlas = ExtResource("4_bkhal")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5fj0e"]
+atlas = ExtResource("4_bkhal")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h40f5"]
+atlas = ExtResource("4_bkhal")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ike8n"]
+atlas = ExtResource("4_bkhal")
+region = Rect2(300, 0, 100, 100)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_rmi40"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ikk2q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nid5t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b4nfm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fn8i3")
+}],
+"loop": false,
+"name": &"death",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_xrdxo")
@@ -52,6 +102,23 @@ animations = [{
 "loop": true,
 "name": &"idle",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ki2bx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5fj0e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h40f5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ike8n")
+}],
+"loop": false,
+"name": &"vulnerable",
+"speed": 5.0
 }]
 
 [node name="enemy2" type="Node2D"]
@@ -62,12 +129,26 @@ arrow_scene = ExtResource("2_mhmjl")
 position = Vector2(3, -35)
 scale = Vector2(5, 5)
 sprite_frames = SubResource("SpriteFrames_rmi40")
-animation = &"idle"
+animation = &"death"
 autoplay = "idle"
-frame_progress = 0.371361
 flip_h = true
 
 [node name="ShootTimer" type="Timer" parent="."]
+
+[node name="VulnerabilityIndicator" type="TextureProgressBar" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -150.0
+offset_right = 100.0
+offset_bottom = -130.0
+grow_horizontal = 2
+grow_vertical = 2
+value = 50.0
+nine_patch_stretch = true
 
 [connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
 [connection signal="timeout" from="ShootTimer" to="." method="_on_shoot_timer_timeout"]

@@ -162,7 +162,7 @@ shape = SubResource("WorldBoundaryShape2D_lnu2h")
 position = Vector2(-1, 1)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
-position = Vector2(54, -49)
+position = Vector2(50, -67)
 zoom = Vector2(4, 4)
 
 [node name="UI" parent="." instance=ExtResource("4_lbhrr")]

@@ -11,7 +11,16 @@ var collided_enemy = null
 var enemy_spawner = null
 
 func _ready():
-	pass
+	PlayerStats.no_health.connect(_on_player_no_health)
+
+func _on_player_no_health():
+	print("Player has died. Restarting stage.")
+	restart_stage()
+
+func restart_stage():
+	PlayerStats.reset()
+	current_state = GameState.MAIN_GAME
+	get_tree().reload_current_scene()
 
 func set_game_scene_references(scene: Node):
 	game_scene = scene
@@ -45,40 +54,55 @@ func _on_enemy_body_entered(body: Node2D):
 		
 		start_battle()
 
+var BattleScene = preload("res://scenes/battle.tscn")
+
 func start_battle():
 	if not battle_instance:
-		battle_instance = load("res://scenes/battle.tscn").instantiate()
+		battle_instance = BattleScene.instantiate()
 		battle_instance.connect("battle_ended", _on_battle_ended)
 		if game_scene:
 			game_scene.call_deferred("add_child", battle_instance)
 		print("Battle instance created and added")
+	current_state = GameState.BATTLE
+	if ui_animation_player:
+		ui_animation_player.play("TransOut")
+		await ui_animation_player.animation_finished
+		var enemy2 = battle_instance.get_node("Enemy2")
+		if enemy2:
+			enemy2.start_battle()
 	else:
 		battle_instance.visible = true
 		battle_instance.set_process(true)
 		battle_instance.set_physics_process(true)
-		var enemy2 = battle_instance.get_node("Enemy2")
-		if enemy2:
-			enemy2.start_battle()
-		print("Battle instance reused")
-	current_state = GameState.BATTLE
-	if ui_animation_player:
-		ui_animation_player.play("TransOut")
+		current_state = GameState.BATTLE
+		if ui_animation_player:
+			ui_animation_player.play("TransOut")
+			await ui_animation_player.animation_finished
+			var enemy2 = battle_instance.get_node("Enemy2")
+			if enemy2:
+				enemy2.start_battle()
 
 func _on_battle_ended():
+	print("GameManager: _on_battle_ended called.")
 	current_state = GameState.TRANSITION	
-	
-	battle_instance.visible = false
-	battle_instance.set_process(false)
-	battle_instance.set_physics_process(false)
-	
+
+	if ui_animation_player:
+		ui_animation_player.play("TransOut")
+		await ui_animation_player.animation_finished # Wait for the transition out animation to finish
+
+	# Free the battle instance after it has ended and after the transition animation
+	if battle_instance and is_instance_valid(battle_instance):
+		battle_instance.queue_free()
+		battle_instance = null
+
 	if collided_enemy:
 		collided_enemy.visible = false
 		collided_enemy.set_physics_process(false)
 		collided_enemy = null
-	
+
 	if enemy_spawner:
 		enemy_spawner.start_spawning_if_needed()
-	
+
 	if player:
 		player.global_position = player_start_pos
 		player.visible = true
@@ -86,5 +110,3 @@ func _on_battle_ended():
 		player.playRun()
 		
 	current_state = GameState.MAIN_GAME
-	if ui_animation_player:
-		ui_animation_player.play("TransOut")

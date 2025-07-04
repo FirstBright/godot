@@ -1,9 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://cd47qptwx32rb"]
+[gd_scene load_steps=6 format=3 uid="uid://cd47qptwx32rb"]
 
 [ext_resource type="Script" uid="uid://d26m72yaohw67" path="res://scripts/battle.gd" id="1_a12nh"]
 [ext_resource type="Texture2D" uid="uid://cwxpx08wedaj1" path="res://assets/Dungeon background cartoon 2d 1.jpg" id="1_dn72j"]
 [ext_resource type="PackedScene" uid="uid://b73qpgjhvyjyv" path="res://scenes/battle_enemy.tscn" id="2_p1qf1"]
 [ext_resource type="PackedScene" uid="uid://ba7qcttcf7t00" path="res://scenes/battle_player.tscn" id="3_a12nh"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_abc12"]
+font_size = 64
+font_color = Color(1, 1, 0, 1)
+outline_size = 12
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 8
+shadow_color = Color(0, 0, 0, 0.6)
 
 [node name="Battle" type="CanvasLayer"]
 script = ExtResource("1_a12nh")
@@ -20,5 +28,23 @@ scale = Vector2(3, 3)
 [node name="Player2" parent="." instance=ExtResource("3_a12nh")]
 position = Vector2(163, 646)
 scale = Vector2(5, 5)
+
+[node name="VulnerabilityPrompt" type="Label" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -50.0
+offset_right = 200.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Press W to Attack!"
+label_settings = SubResource("LabelSettings_abc12")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="ready" from="." to="." method="_on_ready"]

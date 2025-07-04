@@ -16,6 +16,6 @@ func take_damage():
 func get_health():
 	return current_health
 
-func reset_health():
+func reset():
 	current_health = max_health
 	emit_signal("health_changed", current_health)
