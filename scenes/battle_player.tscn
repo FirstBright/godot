@@ -1,8 +1,10 @@
-[gd_scene load_steps=15 format=3 uid="uid://ba7qcttcf7t00"]
+[gd_scene load_steps=17 format=3 uid="uid://ba7qcttcf7t00"]
 
 [ext_resource type="Script" uid="uid://y83ngdcli3ko" path="res://scripts/battle_player.gd" id="1_c08b3"]
 [ext_resource type="Texture2D" uid="uid://dvajakpkwgquc" path="res://assets/knight.png" id="1_lttm1"]
 [ext_resource type="Texture2D" uid="uid://ccbygo8h2shpk" path="res://assets/parring.png" id="3_agjl5"]
+[ext_resource type="AudioStream" uid="uid://bnhku3283hxwp" path="res://assets/parringsound_join.wav" id="4_r6oyp"]
+[ext_resource type="AudioStream" uid="uid://bkpsk2em1022c" path="res://assets/hurt.wav" id="5_2tcgp"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lttm1"]
 atlas = ExtResource("1_lttm1")
@@ -76,7 +78,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"default",
-"speed": 10.0
+"speed": 20.0
 }]
 
 [node name="Player2" type="CharacterBody2D"]
@@ -110,5 +112,14 @@ sprite_frames = SubResource("SpriteFrames_dauvq")
 frame = 3
 frame_progress = 1.0
 flip_h = true
+
+[node name="parry" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_r6oyp")
+volume_db = 17.802
+pitch_scale = 3.01
+max_distance = 1480.0
+
+[node name="hurt" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_2tcgp")
 
 [connection signal="timeout" from="ParryTimer" to="." method="_on_parry_timer_timeout"]

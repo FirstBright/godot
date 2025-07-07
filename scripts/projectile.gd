@@ -2,7 +2,7 @@ extends Area2D
 
 @export var speed: float = 400.0
 var direction: Vector2 = Vector2.RIGHT
-var hit_delay = 0.05
+var hit_delay = 0.1 # Wait 0.1s after collision to check for parry
 var is_waiting_hit = false
 @onready var sprite = $Sprite2D
 signal parried
@@ -22,16 +22,15 @@ func _on_body_entered(body: Node2D) -> void:
 	if body.has_method("is_parrying"):
 		is_waiting_hit = true
 		await get_tree().create_timer(hit_delay).timeout
+		
+		# After waiting, check if the player is in the parry state.
 		if body.is_parrying():
-			is_waiting_hit = false
 			print("Parried!")
-			$parry.play(0.0)
 			emit_signal("parried")
 			if body.has_method("successful_parry"):
 				body.successful_parry()
 			disable()
 		else:
-			$hurt.play(0.0)
 			print("Hit Player")
 			body.take_damage()
 			disable()

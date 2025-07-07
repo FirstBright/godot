@@ -17,11 +17,16 @@ func _ready():
 	regame_button.pressed.connect(_on_regame_button_pressed)
 	exit_button.pressed.connect(_on_exit_button_pressed)
 
+	# Set focus neighbors
+	regame_button.focus_neighbor_bottom = exit_button.get_path()
+	exit_button.focus_neighbor_top = regame_button.get_path()
+
 func _on_health_changed(new_health):
 	health_bar.value = new_health
 
 func show_game_over_screen():
 	game_over_screen.visible = true
+	regame_button.grab_focus()
 	get_tree().paused = true # Pause the game when game over screen is shown
 
 func hide_game_over_screen():

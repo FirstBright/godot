@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://coqplg68s670"
+path="res://.godot/imported/Cluster Block v0_8.mp3-8cece5dc2fcebbbc257d9fb56247c37b.mp3str"
+
+[deps]
+
+source_file="res://assets/Cluster Block v0_8.mp3"
+dest_files=["res://.godot/imported/Cluster Block v0_8.mp3-8cece5dc2fcebbbc257d9fb56247c37b.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
