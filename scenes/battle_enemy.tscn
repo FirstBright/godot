@@ -1,9 +1,10 @@
-[gd_scene load_steps=20 format=3 uid="uid://b73qpgjhvyjyv"]
+[gd_scene load_steps=30 format=3 uid="uid://b73qpgjhvyjyv"]
 
 [ext_resource type="Script" uid="uid://bjm57rdtfr70g" path="res://scripts/battle_enemy.gd" id="1_3neu4"]
 [ext_resource type="Texture2D" uid="uid://binjk3l7jqmn5" path="res://assets/Orc-Idle.png" id="1_wc7mj"]
 [ext_resource type="PackedScene" uid="uid://dlnyofiqxuk7o" path="res://scenes/arrow.tscn" id="2_mhmjl"]
 [ext_resource type="Texture2D" uid="uid://bvc1btbkc8gah" path="res://assets/Orc-Death.png" id="4_bkhal"]
+[ext_resource type="Texture2D" uid="uid://4geecww1v2ki" path="res://assets/mosic1-Sheet.png" id="5_vhncm"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ikk2q"]
 atlas = ExtResource("4_bkhal")
@@ -121,6 +122,70 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_32fuo"]
+atlas = ExtResource("5_vhncm")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i0rai"]
+atlas = ExtResource("5_vhncm")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g7kup"]
+atlas = ExtResource("5_vhncm")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8668a"]
+atlas = ExtResource("5_vhncm")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tl6th"]
+atlas = ExtResource("5_vhncm")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r0k0y"]
+atlas = ExtResource("5_vhncm")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5vbca"]
+atlas = ExtResource("5_vhncm")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lmdcu"]
+atlas = ExtResource("5_vhncm")
+region = Rect2(224, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_qihdk"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_32fuo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i0rai")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g7kup")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8668a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tl6th")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r0k0y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5vbca")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lmdcu")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
 [node name="enemy2" type="Node2D"]
 script = ExtResource("1_3neu4")
 arrow_scene = ExtResource("2_mhmjl")
@@ -149,6 +214,13 @@ grow_horizontal = 2
 grow_vertical = 2
 value = 50.0
 nine_patch_stretch = true
+
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="."]
+position = Vector2(-1, -38)
+scale = Vector2(2.5625, 2.53125)
+sprite_frames = SubResource("SpriteFrames_qihdk")
+autoplay = "default"
+frame_progress = 0.36514
 
 [connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
 [connection signal="timeout" from="ShootTimer" to="." method="_on_shoot_timer_timeout"]
