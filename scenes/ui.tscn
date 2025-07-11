@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://dsukow5ca8n4d"]
+[gd_scene load_steps=11 format=3 uid="uid://dsukow5ca8n4d"]
 
 [ext_resource type="Script" uid="uid://cdxd51o3krydl" path="res://scripts/ui.gd" id="1_abcde"]
 [ext_resource type="Texture2D" uid="uid://ub1hen6sgag5" path="res://assets/underProgress.png" id="2_yev5y"]
 [ext_resource type="Texture2D" uid="uid://bjjo3uu5wp2ru" path="res://assets/progressProgress.png" id="3_gdt2y"]
+[ext_resource type="FontFile" uid="uid://cf8xqmskefdln" path="res://assets/PixelOperator8.ttf" id="4_gdt2y"]
 
 [sub_resource type="Animation" id="Animation_x4jx1"]
 length = 0.001
@@ -201,6 +202,20 @@ vertical_alignment = 1
 layout_mode = 2
 text = "Regame"
 
+[node name="RestartButton" type="Button" parent="GameOverScreen/VBoxContainer"]
+layout_mode = 2
+text = "Restart"
+
 [node name="ExitButton" type="Button" parent="GameOverScreen/VBoxContainer"]
 layout_mode = 2
 text = "Exit"
+
+[node name="FloorLabel" type="Label" parent="."]
+offset_left = 539.0
+offset_top = 18.0
+offset_right = 698.0
+offset_bottom = 42.0
+theme_override_fonts/font = ExtResource("4_gdt2y")
+theme_override_font_sizes/font_size = 24
+text = "Floor : 1"
+horizontal_alignment = 1
