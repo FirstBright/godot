@@ -26,7 +26,7 @@ position = Vector2(1020, 238)
 scale = Vector2(3, 3)
 
 [node name="Player2" parent="." instance=ExtResource("3_a12nh")]
-position = Vector2(163, 646)
+position = Vector2(224, 589)
 scale = Vector2(5, 5)
 
 [node name="VulnerabilityPrompt" type="Label" parent="."]
