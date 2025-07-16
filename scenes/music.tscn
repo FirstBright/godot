@@ -5,3 +5,4 @@
 [node name="Music" type="AudioStreamPlayer2D"]
 stream = ExtResource("1_05ggv")
 autoplay = true
+max_distance = 4096.0

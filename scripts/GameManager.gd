@@ -10,8 +10,6 @@ var ui_animation_player = null
 var ui_instance = null
 var collided_enemy = null
 var enemy_spawner = null
-var EndingScene = preload("res://scenes/ending.tscn")
-var ending_instance = null
 
 var current_floor = 1
 var enemies_defeated_on_current_floor = 0
@@ -28,97 +26,11 @@ func _ready():
 	load_game()
 	signal_references_set.connect(_on_references_set)
 
-
 func _on_player_no_health():
-	if current_state == GameState.TRANSITION:
-		print("GameManager: Ignoring no_health signal, already in TRANSITION state")
-		return
-	print("GameManager: Player has died. Cleaning up battle and showing ending scene.")
-	current_state = GameState.TRANSITION
-	
-	# Clean up battle scene
-	if battle_instance and is_instance_valid(battle_instance):
-		battle_instance.queue_free()
-		battle_instance = null
-		print("GameManager: Battle scene removed")
-	
-	# Clean up collided enemy
-	if collided_enemy and is_instance_valid(collided_enemy):
-		emit_signal("enemy_freed", collided_enemy)
-		collided_enemy.queue_free()
-		collided_enemy = null
-		print("GameManager: Collided enemy freed")
-	
-	# Hide and pause player
-	if player:
-		player.visible = false
-		player.set_physics_process(false)
-		print("GameManager: Player hidden and physics paused")
-	
-	# Stop background music
-	if Music:
-		if Music.get("enable") != null:
-			if Music.enable:
-				Music.stop()
-				print("GameManager: Background music stopped (enable = true)")
-		else:
-			Music.stop()
-			print("GameManager: Background music stopped (no enable variable)")
-	else:
-		push_error("GameManager: Music autoload not found")
-	
-	# Transition back to main game state
-	current_state = GameState.MAIN_GAME
-	
-	# Instantiate and add ending scene (CanvasLayer root)
-	if ending_instance == null:
-		ending_instance = EndingScene.instantiate()
-		if game_scene:
-			game_scene.add_child(ending_instance)
-			await get_tree().process_frame
-			if not ending_instance.is_inside_tree():
-				push_error("GameManager: Ending scene not in tree after add_child")
-				current_state = GameState.MAIN_GAME
-				return
-			print("GameManager: Ending scene instantiated and added to game_scene")
-		else:
-			push_error("GameManager: game_scene is null, cannot add ending scene")
-			current_state = GameState.MAIN_GAME
-			return
-		
-		# Ensure the ending scene is visible
-		ending_instance.visible = true
-		
-		var animated_sprite = ending_instance.get_node_or_null("AnimatedSprite2D")
-		if animated_sprite and animated_sprite is AnimatedSprite2D:
-			animated_sprite.visible = true
-			animated_sprite.play("default")
-		else:
-			push_error("GameManager: AnimatedSprite2D not found in ending.tscn")
-		
-		# Play sound
-		var sound = ending_instance.get_node_or_null("Sound")
-		if sound and (sound is AudioStreamPlayer or sound is AudioStreamPlayer2D):
-			if sound.stream:
-				sound.volume_db = 0.0  # Ensure audible volume
-				sound.play()
-				print("GameManager: Ending scene sound played, volume_db = ", sound.volume_db)
-			else:
-				push_error("GameManager: Sound node has no stream assigned")
-		else:
-			push_error("GameManager: Sound node not found or invalid in ending.tscn")
-		
-	await get_tree().create_timer(2.0).timeout
-	
-	# Show game over screen
+	print("Player has died. Showing game over screen.")
 	if ui_instance:
 		ui_instance.show_game_over_screen()
-		print("GameManager: Game over screen shown")
-	else:
-		push_error("GameManager: UI instance not found, cannot show game over screen")
-		
-	current_state = GameState.MAIN_GAME	
-	
+
 func restart_stage():
 	current_state = GameState.MAIN_GAME
 	# Keep current_floor, reset enemies defeated
@@ -128,20 +40,7 @@ func restart_stage():
 		ui_instance.hide_game_over_screen()
 		ui_instance.update_floor_label(current_floor)
 	# Reset player stats and reload the scene
-	if ending_instance and is_instance_valid(ending_instance):
-		ending_instance.queue_free()
-		ending_instance = null
 	PlayerStats.reset()
-	if Music:
-		if Music.get("enable") != null:
-			if Music.enable:
-				Music.play()
-				print("GameManager: Background music resumed (enable = true)")
-		else:
-			Music.play()
-			print("GameManager: Background music resumed (no enable variable)")
-	else:
-		push_error("GameManager: Music autoload not found")
 	get_tree().reload_current_scene()
 
 func _on_regame_requested():

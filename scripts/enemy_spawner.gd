@@ -89,4 +89,5 @@ func despawn_enemies():
 		if is_instance_valid(enemy) and enemy.visible:
 			enemy.visible = false
 			enemy.set_physics_process(false)
+			enemy.queue_free()
 			print("Enemy despawned at ", enemy.global_position)
