@@ -112,7 +112,7 @@ func _on_player_no_health():
 		var sound = ending_instance.get_node_or_null("Sound")
 		if sound and (sound is AudioStreamPlayer or sound is AudioStreamPlayer2D):
 			if sound.stream:
-				sound.volume_db = 0.0
+				sound.volume_db = 16.0
 				sound.play()
 				print("GameManager: Ending scene sound played, volume_db = ", sound.volume_db)
 			else:
@@ -330,6 +330,16 @@ func _on_battle_ended():
 	current_state = GameState.TRANSITION
 	enemies_defeated_on_current_floor += 1
 
+	# First, clean up the battle that just ended
+	if battle_instance and is_instance_valid(battle_instance):
+		battle_instance.queue_free()
+		battle_instance = null
+
+	if collided_enemy:
+		emit_signal("enemy_freed", collided_enemy)
+		collided_enemy = null
+
+	# Now, check if the floor is cleared and a new one should be set up
 	if enemies_defeated_on_current_floor >= enemies_per_floor:
 		current_floor += 1
 		enemies_defeated_on_current_floor = 0
@@ -337,11 +347,11 @@ func _on_battle_ended():
 		if ui_instance:
 			ui_instance.update_floor_label(current_floor)
 		
-		# Despawn old enemies
+		# Despawn any remaining enemies from the previous floor
 		if enemy_spawner:
 			enemy_spawner.despawn_enemies()
 
-		# Move player to a new floor (upward, negative y)
+		# Move player to a new floor
 		var new_y = player.global_position.y - floor_height
 		player.global_position = Vector2(0, new_y)
 		player_start_pos = player.global_position
@@ -351,18 +361,10 @@ func _on_battle_ended():
 		if enemy_spawner:
 			enemy_spawner.spawn_enemies(enemies_per_floor)
 
+	# Finally, transition back to the game
 	if ui_animation_player:
 		ui_animation_player.play("TransOut")
 		await ui_animation_player.animation_finished
-
-	if battle_instance and is_instance_valid(battle_instance):
-		battle_instance.queue_free()
-		battle_instance = null
-
-	if collided_enemy:
-		emit_signal("enemy_freed", collided_enemy)
-		collided_enemy.queue_free()
-		collided_enemy = null
 
 	if player:
 		player.global_position = player_start_pos

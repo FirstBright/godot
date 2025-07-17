@@ -1,0 +1,25 @@
+This file contains notes and a plan for the development of the Parry Loader game.
+
+## Sound Issues
+
+- **Problem:** The "parry" and "hurt" sounds get quieter over time and eventually become inaudible.
+- **Plan:**
+    1.  Find the code that plays these sounds.
+    2.  Investigate why the volume is decreasing.
+    3.  Fix the code to ensure the sounds play at a consistent volume.
+
+## Gameplay Issues
+
+- **Problem:** The last enemy on each floor is not visible.
+- **Plan:**
+    1.  Examine the `enemy_spawner.gd` script.
+    2.  Identify the bug in the spawning logic that is causing the last enemy to be invisible.
+    3.  Fix the bug to ensure all enemies are visible.
+
+## Game Architecture
+
+- **Goal:** Create a mobile game with five different enemies, with the last one being a boss. The player will move between floors.
+- **Plan:**
+    1.  **Floor Transitions:** For a mobile game, it's generally more efficient to move the player and enemies between different locations rather than regenerating the entire scene. This will reduce loading times and provide a smoother experience.
+    2.  **Enemy Variety:** I'll outline a system for managing different enemy types, including a boss. This will involve creating a base enemy scene and then extending it to create different enemy variations.
+    3.  **Boss Battles:** I'll suggest a way to trigger a boss battle on the final floor.

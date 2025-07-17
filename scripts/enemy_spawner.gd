@@ -27,10 +27,11 @@ func _on_game_manager_references_set():
 	spawn_enemies(max_enemy_count)
 
 func _on_enemy_freed(enemy: Node2D):
-	# Remove the freed enemy from the pool
-	if enemy in enemy_pool:
-		enemy_pool.erase(enemy)
-		print("Enemy freed and removed from pool: ", enemy)
+	# Hide the freed enemy so it can be reused
+	if is_instance_valid(enemy):
+		enemy.visible = false
+		enemy.set_physics_process(false)
+		print("Enemy freed and hidden: ", enemy)
 
 func spawn_enemies(number_to_spawn):
 	var player = GameManager.player
@@ -58,10 +59,10 @@ func spawn_enemies(number_to_spawn):
 	var spawned_count = 0
 	# Calculate x-positions for enemies at regular intervals on the left
 	var base_x = player.global_position.x
-	var offsets = [1,2,3,4,5]  # Multipliers for spawn_interval_x, all negative for left side
+	var offsets = [1, 2, 3, 4, 5]  # Multipliers for spawn_interval_x, all negative for left side
 	for i in range(min(number_to_spawn, max_enemy_count)):
-		if i >= enemy_pool.size():
-			push_error("Enemy pool index out of bounds: ", i)
+		if i >= enemy_pool.size() or i >= offsets.size():
+			push_error("Enemy pool or offset index out of bounds: ", i)
 			break
 		var enemy = enemy_pool[i]
 		if is_instance_valid(enemy) and not enemy.visible:

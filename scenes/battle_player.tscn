@@ -177,13 +177,12 @@ frame = 3
 frame_progress = 1.0
 flip_h = true
 
-[node name="parry" type="AudioStreamPlayer2D" parent="."]
+[node name="parry" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_r6oyp")
 volume_db = 17.802
 pitch_scale = 3.01
-max_distance = 1480.0
 
-[node name="hurt" type="AudioStreamPlayer2D" parent="."]
+[node name="hurt" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_2tcgp")
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
