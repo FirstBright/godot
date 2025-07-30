@@ -87,7 +87,7 @@ func _on_player_no_health():
 		
 		# Handle animation
 		var animated_sprite = ending_instance.get_node_or_null("AnimatedSprite2D")
-		var animation_duration = 2.0  # Fallback duration
+		var animation_duration = 3.0  # Fallback duration
 		if animated_sprite and animated_sprite is AnimatedSprite2D and animated_sprite.sprite_frames:
 			if animated_sprite.sprite_frames.has_animation("default"):
 				animated_sprite.visible = true
@@ -135,8 +135,8 @@ func _on_player_no_health():
 			print("GameManager: Fallback timer finished")
 
 		# Wait for an additional 2 seconds
-		await get_tree().create_timer(2.0).timeout
-		print("GameManager: 2-second delay finished")
+		await get_tree().create_timer(1.0).timeout
+		print("GameManager: 1-second delay finished")
 
 		# Show game over screen
 		if ui_instance and is_instance_valid(ui_instance):
@@ -188,14 +188,13 @@ func restart_stage():
 		print("GameManager: Background music restarted")
 
 	current_state = GameState.MAIN_GAME
-	# Keep current_floor, reset enemies defeated
 	enemies_defeated_on_current_floor = 0
 	save_game()  # Save the current floor
-	if ui_instance:
-		ui_instance.hide_game_over_screen()
-		ui_instance.update_floor_label(current_floor)
-	# Reset player stats and reload the scene
+
+	# Reset player stats BEFORE reloading the scene
 	PlayerStats.reset()
+
+	# Reloading the scene will automatically handle UI updates and references
 	get_tree().reload_current_scene()
 
 func _on_regame_requested():
@@ -310,20 +309,60 @@ func _on_enemy_body_entered(body: Node2D, enemy: Node2D):
 		start_battle()
 
 var BattleScene = preload("res://scenes/battle.tscn")
+var battle_enemy_scenes = {
+	"Orc": preload("res://scenes/Orc.tscn")
+	# Add other enemy types here, e.g., "Goblin": preload("res://scenes/Goblin.tscn")
+}
 
 func start_battle():
 	if not battle_instance:
 		battle_instance = BattleScene.instantiate()
-		battle_instance.battle_ended.connect(_on_battle_ended)
+		
+		# Get the enemy type from the collided overworld enemy
+		var enemy_type = collided_enemy.enemy_type
+		
+		# Find the correct battle enemy scene
+		if battle_enemy_scenes.has(enemy_type):
+			var battle_enemy_scene = battle_enemy_scenes[enemy_type]
+			var battle_enemy = battle_enemy_scene.instantiate()
+			
+			# Replace the placeholder enemy in the battle scene
+			var placeholder = battle_instance.get_node("Enemy2")
+			
+			# Copy position and scale from the placeholder
+			battle_enemy.global_position = placeholder.global_position
+			battle_enemy.scale = placeholder.scale
+			# Check if the placeholder's sprite was flipped
+			var placeholder_sprite = placeholder.get_node_or_null("AnimatedSprite2D")
+			var new_enemy_sprite = battle_enemy.get_node_or_null("AnimatedSprite2D")
+			if placeholder_sprite and new_enemy_sprite:
+				new_enemy_sprite.flip_h = placeholder_sprite.flip_h
+
+			battle_instance.remove_child(placeholder)
+			placeholder.queue_free()
+			
+			battle_enemy.name = "Enemy2" # Keep the name consistent
+			battle_instance.add_child(battle_enemy)
+			
+			# Connect the battle_ended signal from the new enemy
+			battle_enemy.battle_ended.connect(_on_battle_ended)
+		else:
+			print("ERROR: No battle scene defined for enemy type: ", enemy_type)
+			# Handle error, maybe load a default enemy
+
 		game_scene.call_deferred("add_child", battle_instance)
-		print("Battle instance created and added")
+		print("Battle instance created and added with a ", enemy_type)
+
 	current_state = GameState.BATTLE
 	if ui_animation_player:
 		ui_animation_player.play("TransOut")
 		await ui_animation_player.animation_finished
-		var enemy2 = battle_instance.get_node("Enemy2")
-		if enemy2:
-			enemy2.start_battle()
+		
+		# Now that the scene is ready, tell the enemy to start its logic
+		var enemy_node = battle_instance.get_node_or_null("Enemy2")
+		var player_node = battle_instance.get_node_or_null("Player2")
+		if enemy_node and player_node and enemy_node.has_method("start_battle"):
+			enemy_node.start_battle(player_node)
 
 func _on_battle_ended():
 	print("GameManager: Battle ended.")

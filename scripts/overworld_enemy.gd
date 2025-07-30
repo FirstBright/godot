@@ -1,5 +1,7 @@
 extends Area2D
 
+@export var enemy_type: String = "Orc" # Can be "Orc", "Goblin", etc.
+
 func _ready():
 	var sprite = get_node("AnimatedSprite2D")
 	if sprite:

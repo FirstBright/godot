@@ -1,25 +1,39 @@
-This file contains notes and a plan for the development of the Parry Loader game.
+# Parry Loader Development Plan
 
-## Sound Issues
+## Core Architecture: The "Pokémon" Model
 
-- **Problem:** The "parry" and "hurt" sounds get quieter over time and eventually become inaudible.
-- **Plan:**
-    1.  Find the code that plays these sounds.
-    2.  Investigate why the volume is decreasing.
-    3.  Fix the code to ensure the sounds play at a consistent volume.
+Our game uses a two-part system for enemies to create a clear separation between world exploration and combat.
 
-## Gameplay Issues
+1.  **Overworld Enemy (The Trigger):**
+    *   **Purpose:** A simple representation of an enemy on the main map.
+    *   **Function:** Moves around and acts as a trigger for battles. It does not contain any complex combat logic.
+    *   **Implementation:** `overworld_enemy.tscn` with a script that exports an `enemy_type` string (e.g., "Orc").
 
-- **Problem:** The last enemy on each floor is not visible.
-- **Plan:**
-    1.  Examine the `enemy_spawner.gd` script.
-    2.  Identify the bug in the spawning logic that is causing the last enemy to be invisible.
-    3.  Fix the bug to ensure all enemies are visible.
+2.  **Battle Enemy (The Fighter):**
+    *   **Purpose:** The complex, fully-animated enemy that the player fights in the dedicated battle scene.
+    *   **Function:** Handles all combat logic, including animations (idle, attack, vulnerable), attack patterns, and unique behaviors.
+    *   **Implementation:** Uses a flexible, component-based system. A `BaseEnemy.tscn` acts as a template, and specific enemies (like `Orc.tscn`, `Goblin.tscn`) inherit from it. These scenes use `AttackPattern` resources and `AttackComponent` nodes to define their behavior.
 
-## Game Architecture
+3.  **GameManager (The Conductor):**
+    *   **Purpose:** To connect the Overworld and Battle systems.
+    *   **Function:** When the player touches an `overworld_enemy`, the `GameManager` reads its `enemy_type`. It then loads the corresponding `Battle Enemy` scene (e.g., `Orc.tscn`) into the `battle.tscn` and starts the fight.
 
-- **Goal:** Create a mobile game with five different enemies, with the last one being a boss. The player will move between floors.
-- **Plan:**
-    1.  **Floor Transitions:** For a mobile game, it's generally more efficient to move the player and enemies between different locations rather than regenerating the entire scene. This will reduce loading times and provide a smoother experience.
-    2.  **Enemy Variety:** I'll outline a system for managing different enemy types, including a boss. This will involve creating a base enemy scene and then extending it to create different enemy variations.
-    3.  **Boss Battles:** I'll suggest a way to trigger a boss battle on the final floor.
+---
+
+## Current Task: Implementing the New Architecture
+
+We are now implementing this system step-by-step.
+
+*   [X] **Step 1: Revert `EnemySpawner`** - The spawner is back to using the original `overworld_enemy.tscn`.
+*   [X] **Step 2: Add `enemy_type` to `overworld_enemy.gd`** - The trigger now knows what kind of enemy it is.
+*   [ ] **Step 3: Refactor the `GameManager`** - Update the `GameManager` to load the correct Battle Enemy based on `enemy_type`.
+*   [ ] **Step 4: Finalize the Battle Orc** - Ensure `Orc.tscn` is correctly configured as the first Battle Enemy.
+*   [ ] **Step 5: Clean up old files** - Remove the now-redundant `battle_enemy.tscn` and its script.
+
+---
+
+## Future Workflow for Adding New Enemies (e.g., a Goblin)
+
+1.  **Create the Battle Goblin:** Inherit from `BaseEnemy.tscn` to create `Goblin.tscn`. Give it unique animations and `AttackPattern` resources.
+2.  **Create the Overworld Goblin:** Duplicate `overworld_enemy.tscn`, give it a goblin sprite, and set its `enemy_type` to "Goblin".
+3.  **Register the Goblin:** Add the new `Goblin.tscn` to the `GameManager`'s dictionary of battle enemies.

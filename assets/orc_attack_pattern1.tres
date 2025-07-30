@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="AttackPattern" load_steps=3 format=3 uid="uid://cle0c33o6yktn"]
+
+[ext_resource type="PackedScene" uid="uid://dlnyofiqxuk7o" path="res://scenes/arrow.tscn" id="1_dcona"]
+[ext_resource type="Script" uid="uid://b6mk3ycrucxbj" path="res://scripts/AttackPattern.gd" id="2_rjlhk"]
+
+[resource]
+script = ExtResource("2_rjlhk")
+timings = Array[float]([0.5, 1.0, 0.5, 1.0])
+projectile_scene = ExtResource("1_dcona")
+metadata/_custom_type_script = "uid://b6mk3ycrucxbj"

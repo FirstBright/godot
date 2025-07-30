@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://d26m72yaohw67" path="res://scripts/battle.gd" id="1_a12nh"]
 [ext_resource type="Texture2D" uid="uid://cwxpx08wedaj1" path="res://assets/Dungeon background cartoon 2d 1.jpg" id="1_dn72j"]
-[ext_resource type="PackedScene" uid="uid://b73qpgjhvyjyv" path="res://scenes/battle_enemy.tscn" id="2_p1qf1"]
+[ext_resource type="PackedScene" uid="uid://dl0cooc3rxquj" path="res://scenes/Orc.tscn" id="2_p1qf1"]
 [ext_resource type="PackedScene" uid="uid://ba7qcttcf7t00" path="res://scenes/battle_player.tscn" id="3_a12nh"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_abc12"]

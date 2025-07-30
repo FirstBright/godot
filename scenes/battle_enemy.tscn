@@ -1,8 +1,6 @@
-[gd_scene load_steps=30 format=3 uid="uid://b73qpgjhvyjyv"]
+[gd_scene load_steps=28 format=3 uid="uid://dwk5jutxghw0s"]
 
-[ext_resource type="Script" uid="uid://bjm57rdtfr70g" path="res://scripts/battle_enemy.gd" id="1_3neu4"]
 [ext_resource type="Texture2D" uid="uid://binjk3l7jqmn5" path="res://assets/Orc-Idle.png" id="1_wc7mj"]
-[ext_resource type="PackedScene" uid="uid://dlnyofiqxuk7o" path="res://scenes/arrow.tscn" id="2_mhmjl"]
 [ext_resource type="Texture2D" uid="uid://bvc1btbkc8gah" path="res://assets/Orc-Death.png" id="4_bkhal"]
 [ext_resource type="Texture2D" uid="uid://4geecww1v2ki" path="res://assets/mosic1-Sheet.png" id="5_vhncm"]
 
@@ -187,8 +185,6 @@ animations = [{
 }]
 
 [node name="enemy2" type="Node2D"]
-script = ExtResource("1_3neu4")
-arrow_scene = ExtResource("2_mhmjl")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(3, -35)

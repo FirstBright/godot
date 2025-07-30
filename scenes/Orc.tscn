@@ -1,0 +1,114 @@
+[gd_scene load_steps=22 format=3 uid="uid://dl0cooc3rxquj"]
+
+[ext_resource type="PackedScene" uid="uid://ddw6jywnbyfpr" path="res://scenes/BaseEnemy.tscn" id="1_jhbpf"]
+[ext_resource type="Script" uid="uid://dxvx2pfg31sxy" path="res://scripts/orc.gd" id="2_0ymoy"]
+[ext_resource type="Script" uid="uid://b6mk3ycrucxbj" path="res://scripts/AttackPattern.gd" id="3_73b8q"]
+[ext_resource type="Script" uid="uid://i3ovnh8e5bcn" path="res://scripts/ProjectileAttack.gd" id="3_jg5mi"]
+[ext_resource type="Resource" uid="uid://dcnhcrcjewkm8" path="res://assets/orc_attack_pattern.tres" id="4_gjyn7"]
+[ext_resource type="Texture2D" uid="uid://binjk3l7jqmn5" path="res://assets/Orc-Idle.png" id="5_gjyn7"]
+[ext_resource type="Resource" uid="uid://cle0c33o6yktn" path="res://assets/orc_attack_pattern1.tres" id="5_nwdh8"]
+[ext_resource type="Resource" uid="uid://b3u2m01f1lvrn" path="res://assets/orc_attack_pattern2.tres" id="6_54a11"]
+[ext_resource type="Texture2D" uid="uid://bvc1btbkc8gah" path="res://assets/Orc-Death.png" id="8_54a11"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nxtwb"]
+atlas = ExtResource("5_gjyn7")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nwdh8"]
+atlas = ExtResource("5_gjyn7")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_54a11"]
+atlas = ExtResource("5_gjyn7")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bqu2f"]
+atlas = ExtResource("5_gjyn7")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gydkw"]
+atlas = ExtResource("5_gjyn7")
+region = Rect2(400, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h82yl"]
+atlas = ExtResource("5_gjyn7")
+region = Rect2(500, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tx2hc"]
+atlas = ExtResource("8_54a11")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wd12g"]
+atlas = ExtResource("8_54a11")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_udgjo"]
+atlas = ExtResource("8_54a11")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r80mx"]
+atlas = ExtResource("8_54a11")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tx2hc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nxtwb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nwdh8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_54a11")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bqu2f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gydkw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h82yl")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tx2hc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wd12g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_udgjo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r80mx")
+}],
+"loop": true,
+"name": &"vulnerable",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wd12g"]
+size = Vector2(8, 9)
+
+[node name="Orc" instance=ExtResource("1_jhbpf")]
+script = ExtResource("2_0ymoy")
+attack_patterns = Array[ExtResource("3_73b8q")]([ExtResource("4_gjyn7"), ExtResource("5_nwdh8"), ExtResource("6_54a11")])
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." index="0"]
+position = Vector2(-1, -7)
+scale = Vector2(5, 5)
+sprite_frames = SubResource("SpriteFrames_tx2hc")
+flip_h = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="1"]
+position = Vector2(0, -7)
+shape = SubResource("RectangleShape2D_wd12g")
+
+[node name="AttackComponent" type="Node" parent="." index="2"]
+script = ExtResource("3_jg5mi")

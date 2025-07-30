@@ -6,6 +6,7 @@ var hit_delay = 0.05 # Wait 0.1s after collision to check for parry
 var is_waiting_hit = false
 @onready var sprite = $Sprite2D
 signal parried
+signal destroyed
 
 func setup(start_position, target_direction):
 	position = start_position
@@ -39,3 +40,4 @@ func disable():
 	visible = false
 	set_physics_process(false)
 	is_waiting_hit = false
+	emit_signal("destroyed")

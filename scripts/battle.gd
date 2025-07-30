@@ -1,28 +1,24 @@
 extends CanvasLayer
 
 signal battle_ended
-@onready var enemy2: Node2D = $Enemy2
 @onready var vulnerability_prompt: Label = $VulnerabilityPrompt
 
 func _ready() -> void:
-	if enemy2:
-		enemy2.connect("battle_ended", _on_battle_ended)
-		print("battle.gd: Connected battle_ended signal from enemy2.")
-	else:
-		push_error("Enemy2 node not found in Battle scene!")
+	pass
 
 func _process(_delta: float) -> void:
-	if enemy2 and enemy2.is_in_vulnerable_state():
+	var enemy = get_node_or_null("Enemy2")
+	if enemy and enemy.has_method("is_in_vulnerable_state") and enemy.is_in_vulnerable_state():
 		vulnerability_prompt.visible = true
 	else:
 		vulnerability_prompt.visible = false
 
 func _unhandled_input(event: InputEvent) -> void:
+	print("battle.gd: _unhandled_input received event: ", event)
 	if event.is_action_pressed("kill"):
-		print("battle.gd: 'kill_enemy' input detected!")
-		if enemy2 and enemy2.is_in_vulnerable_state():
-			print("battle.gd: Calling enemy2.kill_enemy().")
-			enemy2.kill_enemy()
+		var enemy = get_node_or_null("Enemy2")
+		if enemy and enemy.has_method("is_in_vulnerable_state") and enemy.is_in_vulnerable_state():
+			enemy.die()
 
 func _on_battle_ended():
 	print("battle.gd: _on_battle_ended called.")
