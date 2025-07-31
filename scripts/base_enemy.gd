@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 # EXPORTED VARIABLES (to be configured per enemy type)
 @export var health: int = 3
-@export var attack_patterns: Array[AttackPattern]
+@export var attack_patterns: Array[Resource]
 @export var death_animation_name: String = "death"
 
 # Components
@@ -57,21 +57,48 @@ func _start_next_attack_pattern():
 		current_state = State.IDLE
 		return
 
-	if attack_component:
-		var parry_count = await attack_component.fire(chosen_pattern, _target)
-		
-		print("BaseEnemy: Deciding vulnerability. Received parry_count: ", parry_count, " Pattern size: ", chosen_pattern.timings.size())
+	var attack_component_node: Node
 
-		# Now, the BaseEnemy decides what to do based on the result.
+	# Check the type of the pattern resource to find the correct component.
+	if chosen_pattern is ProjectileAttackPattern:
+		# The original node for projectiles was named AttackComponent.
+		attack_component_node = get_node_or_null("AttackComponent")
+	elif chosen_pattern is TimedAttackPattern:
+		attack_component_node = get_node_or_null("TimedAttack")
+	else:
+		print("ERROR: Unknown attack pattern type!")
+		current_state = State.IDLE
+		return
+
+	if not attack_component_node:
+		print("ERROR: Could not find a compatible AttackComponent node for the chosen pattern.")
+		current_state = State.IDLE
+		return
+
+	# We have a valid component, so cast it and fire.
+	var component_to_fire = attack_component_node as AttackComponent
+	var parry_count = await component_to_fire.fire(chosen_pattern, _target)
+
+	# --- Vulnerability Logic ---
+	# For projectile attacks, we check if it was fully parried.
+	if chosen_pattern is ProjectileAttackPattern:
 		if parry_count >= chosen_pattern.timings.size():
-			print("BaseEnemy: Pattern fully parried! Becoming vulnerable.")
+			print("BaseEnemy: Projectile pattern fully parried! Becoming vulnerable.")
 			become_vulnerable()
 		else:
-			# If the attack finishes and we weren't parried, go back to idle for a cooldown.
-			print("BaseEnemy: Pattern not fully parried. Returning to idle.")
-			current_state = State.IDLE
-			await get_tree().create_timer(2.0).timeout # 2 second cooldown
-			start_attack() # Start the next attack
+			print("BaseEnemy: Projectile pattern not fully parried. Returning to idle.")
+			_return_to_idle_and_cooldown()
+	# For timed attacks, we can decide on a different logic.
+	# For now, let's say they never make the enemy vulnerable.
+	elif chosen_pattern is TimedAttackPattern:
+		print("BaseEnemy: Timed attack finished. Returning to idle.")
+		_return_to_idle_and_cooldown()
+
+func _return_to_idle_and_cooldown():
+	current_state = State.IDLE
+	await get_tree().create_timer(2.0).timeout # 2-second cooldown
+	if current_state == State.IDLE: # Check if we weren't interrupted
+		start_attack()
 
 func become_vulnerable():
 	current_state = State.VULNERABLE

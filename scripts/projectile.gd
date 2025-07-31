@@ -1,12 +1,15 @@
 extends Area2D
 
-@export var speed: float = 500.0
+var speed: float = 500.0
 var direction: Vector2 = Vector2.RIGHT
 var hit_delay = 0.05 # Wait 0.1s after collision to check for parry
 var is_waiting_hit = false
 @onready var sprite = $Sprite2D
 signal parried
 signal destroyed
+
+func set_speed(new_speed: float):
+	speed = new_speed
 
 func setup(start_position, target_direction):
 	position = start_position

@@ -2,12 +2,12 @@
 
 [ext_resource type="PackedScene" uid="uid://ddw6jywnbyfpr" path="res://scenes/BaseEnemy.tscn" id="1_jhbpf"]
 [ext_resource type="Script" uid="uid://dxvx2pfg31sxy" path="res://scripts/orc.gd" id="2_0ymoy"]
-[ext_resource type="Script" uid="uid://b6mk3ycrucxbj" path="res://scripts/AttackPattern.gd" id="3_73b8q"]
-[ext_resource type="Script" uid="uid://i3ovnh8e5bcn" path="res://scripts/ProjectileAttack.gd" id="3_jg5mi"]
+[ext_resource type="Script" uid="uid://i3ovnh8e5bcn" path="res://scripts/ProjectileAttackComponent.gd" id="3_jg5mi"]
 [ext_resource type="Resource" uid="uid://dcnhcrcjewkm8" path="res://assets/orc_attack_pattern.tres" id="4_gjyn7"]
 [ext_resource type="Texture2D" uid="uid://binjk3l7jqmn5" path="res://assets/Orc-Idle.png" id="5_gjyn7"]
 [ext_resource type="Resource" uid="uid://cle0c33o6yktn" path="res://assets/orc_attack_pattern1.tres" id="5_nwdh8"]
 [ext_resource type="Resource" uid="uid://b3u2m01f1lvrn" path="res://assets/orc_attack_pattern2.tres" id="6_54a11"]
+[ext_resource type="Resource" uid="uid://bspsy10wtc8sn" path="res://assets/fast_arrow_pattern.tres" id="6_bqu2f"]
 [ext_resource type="Texture2D" uid="uid://bvc1btbkc8gah" path="res://assets/Orc-Death.png" id="8_54a11"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nxtwb"]
@@ -98,7 +98,9 @@ size = Vector2(8, 9)
 
 [node name="Orc" instance=ExtResource("1_jhbpf")]
 script = ExtResource("2_0ymoy")
-attack_patterns = Array[ExtResource("3_73b8q")]([ExtResource("4_gjyn7"), ExtResource("5_nwdh8"), ExtResource("6_54a11")])
+health = null
+attack_patterns = Array[Resource]([ExtResource("4_gjyn7"), ExtResource("5_nwdh8"), ExtResource("6_54a11"), ExtResource("6_bqu2f")])
+death_animation_name = null
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." index="0"]
 position = Vector2(-1, -7)

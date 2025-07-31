@@ -1,3 +1,5 @@
 [gd_scene format=3 uid="uid://ddw6jywnbyfpr"]
 
 [node name="BaseEnemy" type="CharacterBody2D"]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
