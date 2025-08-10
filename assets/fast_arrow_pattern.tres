@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_b8fxy")
+startup_animation = ""
 startup_delay = 1.0
 timings = Array[float]([0.5])
 projectile_scene = ExtResource("1_vvcxw")
