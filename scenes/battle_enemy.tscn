@@ -191,7 +191,6 @@ position = Vector2(3, -35)
 scale = Vector2(5, 5)
 sprite_frames = SubResource("SpriteFrames_rmi40")
 animation = &"death"
-autoplay = "idle"
 flip_h = true
 
 [node name="ShootTimer" type="Timer" parent="."]
