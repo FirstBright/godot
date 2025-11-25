@@ -105,6 +105,7 @@ func become_vulnerable():
 	print("Enemy is now VULNERABLE. Press W to attack!")
 	
 	if animated_sprite.sprite_frames.has_animation("vulnerable"):
+		animated_sprite.sprite_frames.set_animation_loop("vulnerable", false)
 		animated_sprite.play("vulnerable")
 
 	var vulnerability_timer = get_tree().create_timer(3.0)
