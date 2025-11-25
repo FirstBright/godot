@@ -52,8 +52,10 @@ func _perform_attack(pattern: TimedAttackPattern, owner_enemy: CharacterBody2D, 
 	for body in bodies:
 		if body.is_in_group("player"): # Assuming your player is in the "player" group
 			print("Player hit by timed attack!")
-			# Here you would typically call a method on the player to deal damage
-			# For example: body.take_damage(1)
+			if body.has_method("take_damage"):
+				body.take_damage()
+			else:
+				push_error("Player in group 'player' but has no take_damage method")
 
 	# Play sound if it exists
 	var audio_player = owner_enemy.get_node_or_null("AudioStreamPlayer")

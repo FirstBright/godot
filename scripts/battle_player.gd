@@ -52,9 +52,12 @@ func successful_parry():
 	parry_sound.play()
 	parry_animation.visible = true
 	parry_animation.play("default")
-	# The await call was removed. The animation will play without blocking.
-	# A timer is used to hide it after it's finished.
-	get_tree().create_timer(parry_animation.sprite_frames.get_frame_count("default") * (1 / parry_animation.frame_progress)).connect("timeout", func(): parry_animation.visible = false)
+	# Calculate animation duration based on FPS to avoid division by zero
+	var frame_count = parry_animation.sprite_frames.get_frame_count("default")
+	var fps = parry_animation.sprite_frames.get_animation_speed("default")
+	var duration = frame_count / fps if fps > 0 else 1.0
+	get_tree().create_timer(duration).connect("timeout", 
+		func(): parry_animation.visible = false)
 
 
 func _on_animated_sprite_2d_animation_finished():

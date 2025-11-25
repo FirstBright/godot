@@ -327,7 +327,21 @@ func start_battle():
 			var battle_enemy = battle_enemy_scene.instantiate()
 			
 			# Replace the placeholder enemy in the battle scene
-			var placeholder = battle_instance.get_node("Enemy2")
+			var placeholder = battle_instance.get_node_or_null("Enemy2")
+			if not placeholder:
+				push_error("Placeholder Enemy2 not found in battle scene")
+				# Recover by returning to main game state
+				current_state = GameState.MAIN_GAME
+				if player:
+					player.set_physics_process(true)
+					player.playRun()
+				if collided_enemy:
+					emit_signal("enemy_freed", collided_enemy)
+					collided_enemy = null
+				if battle_instance:
+					battle_instance.queue_free()
+					battle_instance = null
+				return
 			
 			# Copy position and scale from the placeholder
 			battle_enemy.global_position = placeholder.global_position
@@ -347,8 +361,19 @@ func start_battle():
 			# Connect the battle_ended signal from the new enemy
 			battle_enemy.battle_ended.connect(_on_battle_ended)
 		else:
-			print("ERROR: No battle scene defined for enemy type: ", enemy_type)
-			# Handle error, maybe load a default enemy
+			push_error("No battle scene defined for enemy type: " + enemy_type)
+			# Recover by returning to main game state
+			current_state = GameState.MAIN_GAME
+			if player:
+				player.set_physics_process(true)
+				player.playRun()
+			if collided_enemy:
+				emit_signal("enemy_freed", collided_enemy)
+				collided_enemy = null
+			if battle_instance:
+				battle_instance.queue_free()
+				battle_instance = null
+			return
 
 		game_scene.call_deferred("add_child", battle_instance)
 		print("Battle instance created and added with a ", enemy_type)
